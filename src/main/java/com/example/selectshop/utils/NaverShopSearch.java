@@ -4,11 +4,12 @@ import com.example.selectshop.models.ItemDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 
 //ARC에 Naver shopping API코드를 Spring 형태로 뽑아낸 코드를 카피해온다
 public class NaverShopSearch {
@@ -51,14 +52,8 @@ public class NaverShopSearch {
         }
         return itemDtoList;
     }
-    //메인함수 - Spring 함수와 무관하게 실행함
 
-    //Controller는 2가지만 수행한다
-//    search 메소드를 호출해서 문자열을 받고
-//    그뒤 fromJSONtoItems 메소드에 input 으로 줘서 결과를 반환받으면 클라이언트에서 자유롭게 데이터를 받는다
-    //main은 필요가 없어졋다.
-
-        }
+}
 
 
 
