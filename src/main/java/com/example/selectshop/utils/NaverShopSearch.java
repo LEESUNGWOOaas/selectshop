@@ -32,10 +32,9 @@ public class NaverShopSearch {
         return response;
     }
 
-    //메인함수 - Spring 함수와 무관하게 실행함
-    public static void main(String[] args) {
-        NaverShopSearch naverShopSearch = new NaverShopSearch();
-        String result = naverShopSearch.search("아이맥");
+//     문자열로 받고 json Object로 바꿔서 ItemDtoList 만들어서 반환하는것은 항상쓰인다.
+//        JsontoItem이란 메소드로 만들어서 더욱 편하게 반복적으로 사용하게 한다.
+    public List<ItemDto> fromJSONtoItems(String result) {
         JSONObject rjson = new JSONObject(result);//result값이 {}형식안에 들어간다
         System.out.println(rjson);
         JSONArray items = rjson.getJSONArray("items"); // rjson에서 jsonArray를 꺼낸다
@@ -44,20 +43,22 @@ public class NaverShopSearch {
         //itemDtoList안에  만든 itemDto의 데이터를 넣고 controller로 반환한다.
 
         //json의 배열안에서 값을 꺼내야 하는데 for문을 돌려서 꺼낸다
-        for (int i=0; i<items.length(); i++) {//시작지점 ,item의 크기만큼 꺼낸다
+        for (int i = 0; i < items.length(); i++) {//시작지점 ,item의 크기만큼 꺼낸다
             JSONObject itemJson = (JSONObject) items.get(i);//object가 모여서 array가 되기때문에
             System.out.println(itemJson);
             ItemDto itemDto = new ItemDto(itemJson);
             itemDtoList.add(itemDto);
-
-
-            //타이틀,이미지,링크,최저가 데이터 꺼내기
-//String title = itemJson.getString("title");
-//String image = itemJson.getString("image");
-//String link = itemJson.getString("link");
-//int lprice = itemJson.getInt("lprice");
-//System.out.println(lprice);
-//화면이 데이터 요청한 것을 데이터를 돌려줘야한다.
         }
+        return itemDtoList;
     }
-}
+    //메인함수 - Spring 함수와 무관하게 실행함
+
+    //Controller는 2가지만 수행한다
+//    search 메소드를 호출해서 문자열을 받고
+//    그뒤 fromJSONtoItems 메소드에 input 으로 줘서 결과를 반환받으면 클라이언트에서 자유롭게 데이터를 받는다
+    //main은 필요가 없어졋다.
+
+        }
+
+
+
