@@ -1,5 +1,6 @@
 package com.example.selectshop.service;
 
+import com.example.selectshop.models.ItemDto;
 import com.example.selectshop.models.Product;
 import com.example.selectshop.models.ProductMyPriceRequestDto;
 
@@ -26,6 +27,14 @@ public class ProductService {
         //그 정보를 update한다
         product.update(requestDto);
         return id;
+    }
+    @Transactional
+    public Long updateBySearch(Long id, ItemDto itemDto){
+      Product product = productRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("아이디가 존재하지 않습니다.")//에러는 상관이없다.
+        );
+      product.updateByItemDto(itemDto);
+      return id;
     }
 }
 

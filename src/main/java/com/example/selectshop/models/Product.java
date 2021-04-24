@@ -39,6 +39,10 @@ public class Product extends Timestamped{
         this.myprice = 0; //myprice는 가격 설정을 안하고 생성시 제일 작은 것 부터 순차적으로 보여줘야한다. 0이면 최저가 표시가 안나온다.
 
     }
+    //item 정보를 받아서 product에 업데이트
+    public void updateByItemDto(ItemDto itemdto){
+        this.lprice = itemdto.getLprice();
+    }
 
     public void update(ProductMyPriceRequestDto requestDto){
         this.myprice = requestDto.getMyprice();
