@@ -59,6 +59,7 @@ function execSearch() { //검색을 실행하는 부분
             type : 'GET',
             url : `/api/search?query=${query}`,
             success : function(response){
+                // 4. for 문마다 itemDto를 꺼내서 HTML 만들고 검색결과 목록에 붙이기
                 for(let i=0;i<response.length;i++){
                     let itemDto = response[i]; //itemDto값안에 하나하나 검색결과가 들어감
                     let tempHtml = addHTML(itemDto);
@@ -67,8 +68,6 @@ function execSearch() { //검색을 실행하는 부분
             }
 
         })
-    // 4. for 문마다 itemDto를 꺼내서 HTML 만들고 검색결과 목록에 붙이기
-
 
 }
 
@@ -104,19 +103,18 @@ function addProduct(itemDto) {
      */
 
     // 1. POST /api/products 에 관심 상품 생성 요청
-
-
     $.ajax({
         type : 'POST',
         url : "/api/products",
         data : JSON.stringify(itemDto),
         contentType : "application/json",
+        // 2. 응답 함수에서 modal을 뜨게 하고, targetId 를 reponse.id 로 설정 (myprice 설정하기 위함)
         success : function(response){
             $('#container').addClass('active');
             targetId = response.id; //targetId = 전역변수 (제일최근에 담긴 관심상품 id가 담김)
         }
     })
-    // 2. 응답 함수에서 modal을 뜨게 하고, targetId 를 reponse.id 로 설정 (myprice 설정하기 위함)
+
 
 }
 
@@ -173,15 +171,32 @@ function addProductItem(product) {
 }
 
 function setMyprice() {
-    /**
-     * 1. id가 myprice 인 input 태그에서 값을 가져온다.
-     * 2. 만약 값을 입력하지 않았으면 alert를 띄우고 중단한다.
-     * 3. PUT /api/product/${targetId} 에 data를 전달한다.
-     *    주의) contentType: "application/json",
-     *         data: JSON.stringify({myprice: myprice}),
-     *         빠뜨리지 말 것!
-     * 4. 모달을 종료한다. $('#container').removeClass('active');
-     * 5, 성공적으로 등록되었음을 알리는 alert를 띄운다.
-     * 6. 창을 새로고침한다. window.location.reload();
-     */
+
+     // 1. id가 myprice 인 input 태그에서 값을 가져온다.
+        let myprice = $('myprice').val
+
+     // 2. 만약 값을 입력하지 않았으면 alert를 띄우고 중단한다.
+        if(myprice == ''){
+            alert('올바른 형식이 아닙니다. 설정가격을 넣어주세요')
+        }
+
+     // 3. PUT /api/product/${targetId} 에 data를 전달한다.
+     // 주의) contentType: "application/json",
+     //      data: JSON.stringify({myprice: myprice}),
+     //      빠뜨리지 말 것!
+        $.ajax({
+            type : "PUT",
+            url : '/api/products/{targetId}',
+            contentType : "application/json",
+            data : JSON.stringify({myprice:myprice}),
+            success : function (response){
+      //   4. 모달을 종료한다. $('#container').removeClass('active');
+                $('#container').removeClass('active');
+      //   5. 성공적으로 등록되었음을 알리는 alert를 띄운다.
+                alert('설정이 완료됬습니다.');
+      //   6. 창을 새로고침한다. window.location.reload();
+                window.location.reload();
+            }
+        })
+
 }
