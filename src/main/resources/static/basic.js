@@ -163,20 +163,21 @@ function addProductItem(product) {
 function setMyprice() {
 
     // 1. id가 myprice 인 input 태그에서 값을 가져온다.
-    let myprice = $('myprice').val
+    let myprice = $('myprice').val();
 
     // 2. 만약 값을 입력하지 않았으면 alert를 띄우고 중단한다.
     if(myprice == ''){
-        alert('올바른 형식이 아닙니다. 설정가격을 넣어주세요')
+        alert('올바른 형식이 아닙니다. 설정가격을 넣어주세요');
+        return;
     }
 
     // 3. PUT /api/product/${targetId} 에 data를 전달한다.
     // 주의) contentType: "application/json",
     //      data: JSON.stringify({myprice: myprice}),
-    //      빠뜨리지 말 것!
+
     $.ajax({
         type : "PUT",
-        url : '/api/products/{targetId}',
+        url : `/api/products/${targetId}`,
         contentType : "application/json",
         data : JSON.stringify({myprice:myprice}),
         success : function (response){
